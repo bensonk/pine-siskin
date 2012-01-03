@@ -7,12 +7,10 @@ import urllib2 as urllib
 consumer_key = "0QfgB8xEzGWR3WmnLV7UQ"
 consumer_secret = "AbKKg0rmvAHfvt6jgYOUfdhP4LDaiaQ9zVf1roMCjU"
 
+
 class TwitterClient(object):
   def __init__(self, token, secret):
-    # Pine Siskin key & secret
     self.consumer = oauth.Consumer(key=consumer_key, secret=consumer_secret)
-
-    # User's token
     self.token = oauth.Token(token, secret)
 
 
@@ -33,6 +31,8 @@ class TwitterClient(object):
     oauth_req.sign_request(signature_method, self.consumer, self.token)
 
     # Make a urllib request object and open the connection
-    req = urllib.Request(url=url, headers=oauth_req.to_header())
+    headers = oauth_req.to_header()
+    headers['User-agent'] = "Pine Siskin/0.1"
+    req = urllib.Request(url=url, headers=headers)
     connection = urllib.urlopen(req)
     return connection
