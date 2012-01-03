@@ -2,6 +2,8 @@
 import time
 import oauth2 as oauth
 import urllib2 as urllib
+import socket
+socket._fileobject.default_bufsize = 0
 
 # Pine Siskin key & secret
 consumer_key = "0QfgB8xEzGWR3WmnLV7UQ"
@@ -33,6 +35,7 @@ class TwitterClient(object):
     # Make a urllib request object and open the connection
     headers = oauth_req.to_header()
     headers['User-agent'] = "Pine Siskin/0.1"
+    headers['Accept-Encoding'] = "*/*"
     req = urllib.Request(url=url, headers=headers)
     connection = urllib.urlopen(req)
     return connection
