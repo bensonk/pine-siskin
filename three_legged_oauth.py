@@ -1,8 +1,6 @@
 import urlparse
 import oauth2 as oauth
-
-consumer_key = "0QfgB8xEzGWR3WmnLV7UQ"
-consumer_secret = "AbKKg0rmvAHfvt6jgYOUfdhP4LDaiaQ9zVf1roMCjU"
+from config import consumer_key, consumer_secret
 
 request_token_url = 'http://twitter.com/oauth/request_token'
 access_token_url = 'http://twitter.com/oauth/access_token'
