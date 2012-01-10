@@ -6,10 +6,7 @@ from pprint import pprint
 from urllib2 import HTTPError, URLError
 
 # Twitter home timeline URL
-#url = "https://api.twitter.com/1/statuses/home_timeline.json?include_entities=true&count=10"
-#url = "https://api.twitter.com/1/account/verify_credentials.xml"
 url = "https://userstream.twitter.com/2/user.json"
-
 
 def parse_tweets(json_str):
   tweets = json.loads(json_str)
