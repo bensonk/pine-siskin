@@ -4,6 +4,7 @@ from streaming_twitter import TwitterClient
 import simplejson as json
 from pprint import pprint
 from urllib2 import HTTPError, URLError
+from models import Tweet
 
 # Twitter home timeline URL
 url = "https://userstream.twitter.com/2/user.json"
@@ -15,9 +16,8 @@ def handle_init(json_str):
 
 def handle_tweets(json_str):
   try: 
-    tweet = json.loads(json_str)
-    info = { "user": tweet['user']['name'].encode('utf-8', 'ignore'), "time": tweet['created_at'], "text": tweet['text'].encode('utf-8', 'ignore') }
-    print("{user} at {time}:\n    {text}\n".format(**info))
+    tweet = Tweet(json.loads(json_str))
+    print(tweet)
   except:
     # This is to handle unexpected characters more gracefully. Ideally we'd
     # have some sort of logging facility here. 
