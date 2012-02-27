@@ -2,7 +2,7 @@ class Tweet(object):
   def __init__(self, data = None):
     """Creates a tweet.  If provided, loads json-decoded data from the twitter API"""
     if data:
-      load(data)
+      self.load(data)
 
   def load(self, data):
     """Loads json-decoded data from the twitter API"""

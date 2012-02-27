@@ -5,6 +5,7 @@ import simplejson as json
 from pprint import pprint
 from urllib2 import HTTPError, URLError
 from models import Tweet
+from simplejson.decoder import JSONDecodeError
 
 # Twitter home timeline URL
 url = "https://userstream.twitter.com/2/user.json"
@@ -18,7 +19,7 @@ def handle_tweets(json_str):
   try: 
     tweet = Tweet(json.loads(json_str))
     print(tweet)
-  except:
+  except JSONDecodeError as e:
     # This is to handle unexpected characters more gracefully. Ideally we'd
     # have some sort of logging facility here. 
     pass
