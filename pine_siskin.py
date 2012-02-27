@@ -1,35 +1,15 @@
 #!/usr/bin/env python
 from config import oauth_token, oauth_secret
 from streaming_twitter import TwitterClient
-import simplejson as json
-from pprint import pprint
 from urllib2 import HTTPError, URLError
 from models import Tweet
-from simplejson.decoder import JSONDecodeError
 
 # Twitter home timeline URL
 url = "https://userstream.twitter.com/2/user.json"
-friends = []
-
-def handle_init(json_str):
-  global friends
-  friends = json.loads(json_str)['friends']
-
-def handle_tweets(json_str):
-  try: 
-    tweet = Tweet(json.loads(json_str))
-    print(tweet)
-  except JSONDecodeError as e:
-    # This is to handle unexpected characters more gracefully. Ideally we'd
-    # have some sort of logging facility here. 
-    pass
-
 client = TwitterClient(oauth_token, oauth_secret)
 try:
-  tweet_stream = client.get(url)
-  handle_init(tweet_stream.readline())
-  for line in tweet_stream:
-    handle_tweets(line)
+  def printer(t): print t
+  client.watch(url, printer)
 except HTTPError, e:
   print "The server couldn't fulfill the request."
   print 'Error code: ', e.code
