@@ -19,11 +19,16 @@ class TwitterClient(object):
   def handle_init(self, friend_json):
     self.friends.extend(json.loads(friend_json)['friends'])
 
-  def handle_tweet(self, tweet_json, callback):
+  def handle_message(self, tweet_json, callback):
     try: 
-      tweet = Tweet(json.loads(tweet_json))
-      self.tweets.append(tweet)
-      callback(tweet)
+      message = json.loads(tweet_json)
+      if 'delete' in message:
+        # TODO: Create a delete model and do something worthwhile with it
+        pass
+      else:
+        tweet = Tweet(message)
+        self.tweets.append(tweet)
+        callback(tweet)
     except JSONDecodeError as e:
       # This is to handle empty messages and unexpected characters more
       # gracefully. We might want to have some sort of logging facility here. 
@@ -33,7 +38,7 @@ class TwitterClient(object):
     tweet_stream = self.get(url)
     self.handle_init(tweet_stream.readline())
     for line in tweet_stream:
-      self.handle_tweet(line, callback)
+      self.handle_message(line, callback)
 
   def get(self, url):
     # Set parameters
