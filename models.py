@@ -6,9 +6,12 @@ class Tweet(object):
 
   def load(self, data):
     """Loads json-decoded data from the twitter API"""
-    self.user = data['user']['name'].encode('utf-8', 'ignore')
-    self.time = data['created_at']
-    self.text = data['text'].encode('utf-8', 'ignore')
+    try:
+      self.user = data['user']['name'].encode('utf-8', 'ignore')
+      self.time = data['created_at']
+      self.text = data['text'].encode('utf-8', 'ignore')
+    except:
+      print "ERROR: Failed to parse tweet"
 
   def __str__(self):
     if self.user and self.time and self.text:
