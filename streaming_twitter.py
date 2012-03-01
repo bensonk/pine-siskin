@@ -35,10 +35,25 @@ class TwitterClient(object):
       pass
 
   def watch(self, url, callback):
-    tweet_stream = self.get(url)
-    self.handle_init(tweet_stream.readline())
-    for line in tweet_stream:
-      self.handle_message(line, callback)
+    error_count = 0
+    while True:
+      try:
+        last_connection = time.time()
+        tweet_stream = self.get(url)
+        self.handle_init(tweet_stream.readline())
+        for line in tweet_stream:
+          self.handle_message(line, callback)
+      except IOError as error:
+        error_count += 1
+        delay = time.time() - last_connection
+        if delay < 120:
+          # Mandated exponential backoff
+          time.sleep(2 ** error_count)
+        else:
+          # If we've successfully kept a connection open for at least 2
+          # minutes, we can reset our error count. 
+          error_count = 0
+
 
   def get(self, url):
     # Set parameters
