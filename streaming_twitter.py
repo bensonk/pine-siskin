@@ -45,6 +45,7 @@ class TwitterClient(object):
           self.handle_message(line, callback)
       except IOError as error:
         error_count += 1
+        print "Connection failed with error '{}'.  Error count is {}".format(error, error_count)
         delay = time.time() - last_connection
         if delay < 120:
           # Mandated exponential backoff
