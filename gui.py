@@ -1,11 +1,9 @@
-import sys, gtk
+import sys, gtk, json
 from threading import Thread
 from config import oauth_token, oauth_secret
 from streaming_twitter import TwitterClient
-import simplejson as json
 from urllib2 import HTTPError, URLError
 from models import Tweet
-from simplejson.decoder import JSONDecodeError
 
 # Twitter home timeline URL
 url = "https://userstream.twitter.com/2/user.json"

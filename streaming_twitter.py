@@ -1,10 +1,7 @@
 #!/usr/bin/python
-import time
+import time, socket, json
 import oauth2 as oauth
 import urllib2 as urllib
-import socket
-import simplejson as json
-from simplejson.decoder import JSONDecodeError
 from config import consumer_secret, consumer_key
 from models import Tweet
 socket._fileobject.default_bufsize = 0
@@ -29,7 +26,7 @@ class TwitterClient(object):
         tweet = Tweet(message)
         self.tweets.append(tweet)
         callback(tweet)
-    except JSONDecodeError as e:
+    except ValueError as e:
       # This is to handle empty messages and unexpected characters more
       # gracefully. We might want to have some sort of logging facility here. 
       pass
