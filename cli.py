@@ -1,13 +1,12 @@
 #!/usr/bin/env python
-from config import oauth_token, oauth_secret
+from config import config
 from streaming_twitter import TwitterClient
 from urllib2 import HTTPError, URLError
 from models import Tweet
 
 # Twitter home timeline URL
 url = "https://userstream.twitter.com/2/user.json"
-client = TwitterClient(oauth_token, oauth_secret)
-
+client = TwitterClient(config['auth']['oauth_token'], config['auth']['oauth_token_secret'])
 
 
 def print_timeline():

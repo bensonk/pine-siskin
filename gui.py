@@ -1,6 +1,6 @@
 import sys, gtk, json
 from threading import Thread
-from config import oauth_token, oauth_secret
+from config import config
 from streaming_twitter import TwitterClient
 from urllib2 import HTTPError, URLError
 from models import Tweet

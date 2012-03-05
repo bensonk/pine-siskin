@@ -2,13 +2,13 @@
 import time, socket, json
 import oauth2 as oauth
 import urllib2 as urllib
-from config import consumer_secret, consumer_key
+from config import config
 from models import Tweet
 socket._fileobject.default_bufsize = 0
 
 class TwitterClient(object):
   def __init__(self, token, secret):
-    self.consumer = oauth.Consumer(key=consumer_key, secret=consumer_secret)
+    self.consumer = oauth.Consumer(key=config['consumer']['key'], secret=config['consumer']['secret'])
     self.token = oauth.Token(token, secret)
     self.tweets = []
     self.friends = []
