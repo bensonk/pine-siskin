@@ -47,7 +47,6 @@ def do_login():
 
   update_config('auth', auth)
 
-print "Hello, World!"
 if __name__ == "__main__":
-  print "Do twitter login"
+  print "Doing twitter login, buckle your seatbelts."
   do_login()
