@@ -2,19 +2,31 @@
 import time, socket, json
 import oauth2 as oauth
 import urllib2 as urllib
+from urllib import urlencode
 from config import config
 from models import Tweet
 socket._fileobject.default_bufsize = 0
+update_endpoint = 'https://twitter.com/statuses/update.json'
 
 class TwitterClient(object):
-  def __init__(self, token, secret):
+  def __init__(self):
     self.consumer = oauth.Consumer(key=config['consumer']['key'], secret=config['consumer']['secret'])
-    self.token = oauth.Token(token, secret)
+    self.token = oauth.Token(config['auth']['oauth_token'], config['auth']['oauth_token_secret'])
     self.tweets = []
     self.friends = []
+    self.client = oauth.Client(self.consumer, self.token)
 
   def handle_init(self, friend_json):
     self.friends.extend(json.loads(friend_json)['friends'])
+
+  def tweet(self, text, msg_dict={}):
+    if len(text) > 140:
+      raise ValueError('Tweet was too long')
+    msg_dict['status'] = text
+    message_body = urlencode(msg_dict)
+    resp, content = self.client.request(update_endpoint, 'POST', message_body, include_body_hash=False)
+    print 'Response: {}'.format(resp)
+    print 'Response content: {}'.format(content)
 
   def handle_message(self, tweet_json, callback):
     try: 
