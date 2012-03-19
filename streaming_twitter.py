@@ -17,7 +17,10 @@ class TwitterClient(object):
     self.client = oauth.Client(self.consumer, self.token)
 
   def handle_init(self, friend_json):
-    self.friends.extend(json.loads(friend_json)['friends'])
+    try:
+      self.friends.extend(json.loads(friend_json)['friends'])
+    except:
+      print "Error fetching initial friends list"
 
   def tweet(self, text, msg_dict={}):
     if len(text) > 140:
@@ -34,6 +37,13 @@ class TwitterClient(object):
       if 'delete' in message:
         # TODO: Create a delete model and do something worthwhile with it
         pass
+      if 'follow' in message:
+        # TODO: Create a follow model and do something worthwhile with it
+        pass
+      if 'retweeted_status' in message:
+        tweet = Tweet(message['retweeted_status'])
+        self.tweets.append(tweet)
+        callback(tweet)
       else:
         tweet = Tweet(message)
         self.tweets.append(tweet)
