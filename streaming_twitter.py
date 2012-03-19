@@ -4,7 +4,7 @@ import oauth2 as oauth
 import urllib2 as urllib
 from urllib import urlencode
 from config import config
-from models import Tweet
+from models import *
 socket._fileobject.default_bufsize = 0
 update_endpoint = 'https://twitter.com/statuses/update.json'
 
@@ -34,13 +34,13 @@ class TwitterClient(object):
   def handle_message(self, tweet_json, callback):
     try: 
       message = json.loads(tweet_json)
-      if 'delete' in message:
-        # TODO: Create a delete model and do something worthwhile with it
-        pass
-      if 'follow' in message:
-        # TODO: Create a follow model and do something worthwhile with it
-        pass
-      if 'retweeted_status' in message:
+      if 'event' in message:
+        event = Event(message)
+        callback(event)
+      elif 'delete' in message:
+        deletion = Deletion(message)
+        callback(deletion)
+      elif 'retweeted_status' in message:
         tweet = Tweet(message['retweeted_status'])
         self.tweets.append(tweet)
         callback(tweet)
